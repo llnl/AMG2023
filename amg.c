@@ -62,6 +62,7 @@ HYPRE_Int BuildIJLaplacian27pt (HYPRE_Int argc, char *argv [], HYPRE_BigInt *siz
 HYPRE_BigInt hypre_map27( HYPRE_BigInt  ix, HYPRE_BigInt  iy, HYPRE_BigInt  iz, HYPRE_Int  px,
                           HYPRE_Int  py, HYPRE_Int  pz, HYPRE_BigInt  Cx, HYPRE_BigInt  Cy, HYPRE_BigInt  Cz, HYPRE_Int nx,
                           HYPRE_Int nxy);
+
 #ifdef __cplusplus
 }
 #endif
@@ -365,7 +366,7 @@ main( hypre_int argc,
    HYPRE_Init();
 #if defined(HYPRE_USING_GPU) || defined(HYPRE_USING_DEVICE_OPENMP)
    HYPRE_DeviceInitialize();
-   /* HYPRE_PrintDeviceInfo(); */
+   HYPRE_PrintDeviceInfo();
 #endif
 
    hypre_EndTiming(time_index);
@@ -2621,8 +2622,6 @@ BuildIJLaplacian27pt( HYPRE_Int             argc,
    return (0);
 }
 
-static HYPRE_BigInt g_tmp = 0;
-
 HYPRE_BigInt
 hypre_map27( HYPRE_BigInt  ix,
              HYPRE_BigInt  iy,
@@ -2753,8 +2752,6 @@ BuildIJLaplacian7pt( HYPRE_Int            argc,
    ny_global = (HYPRE_BigInt)(Q * ny);
    nz_global = (HYPRE_BigInt)(R * nz);
    global_size = nx_global * ny_global * nz_global;
-
-   g_tmp = global_size;
 
    if (myid == 0)
    {
