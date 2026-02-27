@@ -2752,7 +2752,6 @@ BuildIJLaplacian7pt( HYPRE_Int            argc,
    ny_global = (HYPRE_BigInt)(Q * ny);
    nz_global = (HYPRE_BigInt)(R * nz);
    global_size = nx_global * ny_global * nz_global;
-
    if (myid == 0)
    {
       hypre_printf("  Laplacian_7pt:\n");
