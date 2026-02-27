@@ -32,7 +32,7 @@
 
 #include "HYPRE_config.h"
 #include "_hypre_utilities.h"
-#include "seq_mv.h"
+#include "_hypre_seq_mv.h"
 #include "HYPRE.h"
 #include "HYPRE_parcsr_mv.h"
 
@@ -83,9 +83,9 @@ main( hypre_int argc,
    HYPRE_Int           mg_max_iter = 100;
    HYPRE_Real          final_res_norm;
    HYPRE_Real          max_row_sum = 1.0;
-   void               *object;
+   void               *object = NULL;
 
-   HYPRE_IJMatrix      ij_A;
+   HYPRE_IJMatrix      ij_A = NULL;
    HYPRE_IJVector      ij_b;
    HYPRE_IJVector      ij_x;
 
@@ -1005,7 +1005,7 @@ BuildIJLaplacian27pt( HYPRE_Int             argc,
 
    local_size = nx * ny * nz;
 
-   row_index = (HYPRE_BigInt)(myid * local_size);
+   row_index = myid * ((HYPRE_BigInt) local_size);
 
    row_nums = hypre_CTAlloc(HYPRE_BigInt, local_size, HYPRE_MEMORY_HOST);
    num_cols = hypre_CTAlloc(HYPRE_Int, local_size, HYPRE_MEMORY_HOST);
@@ -2753,7 +2753,6 @@ BuildIJLaplacian7pt( HYPRE_Int            argc,
    nz_global = (HYPRE_BigInt)(R * nz);
    global_size = nx_global * ny_global * nz_global;
    if (myid == 0)
-
    {
       hypre_printf("  Laplacian_7pt:\n");
       hypre_printf("    (Nx, Ny, Nz) = (%b, %b, %b)\n", nx_global, ny_global, nz_global);
@@ -2776,23 +2775,24 @@ BuildIJLaplacian7pt( HYPRE_Int            argc,
    value = hypre_CTAlloc(HYPRE_Real, 2, HYPRE_MEMORY_HOST);
 
    value[0] = 6.0;
-   if (nx == 1 || ny == 1 || nz == 1)
+   if (nx_global == 1 || ny_global == 1 || nz_global == 1)
    {
       value[0] = 4.0;
    }
-   if (nx * ny == 1 || nx * nz == 1 || ny * nz == 1)
+   if (nx_global * ny_global == 1 || nx_global * nz_global == 1 || ny_global * nz_global == 1)
    {
       value[0] = 2.0;
    }
-   value[1] = -1.;
+   value[1] = -1.0;
 
    local_size = nx * ny * nz;
 
-   row_index = (HYPRE_BigInt)(myid * local_size);
+   row_index = myid * ((HYPRE_BigInt) local_size);
    row_nums = hypre_CTAlloc(HYPRE_BigInt, local_size, HYPRE_MEMORY_HOST);
    num_cols = hypre_CTAlloc(HYPRE_Int, local_size, HYPRE_MEMORY_HOST);
 
-   HYPRE_IJMatrixCreate( comm, row_index, (HYPRE_BigInt)(row_index + local_size - 1),
+   HYPRE_IJMatrixCreate( comm,
+                         row_index, (HYPRE_BigInt)(row_index + local_size - 1),
                          row_index, (HYPRE_BigInt)(row_index + local_size - 1),
                          &ij_A );
 
