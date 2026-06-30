@@ -975,9 +975,9 @@ BuildIJLaplacian27pt( HYPRE_Int             argc,
     * Print driver parameters
     *-----------------------------------------------------------*/
 
-   nx_global = (HYPRE_BigInt)(P * nx);
-   ny_global = (HYPRE_BigInt)(Q * ny);
-   nz_global = (HYPRE_BigInt)(R * nz);
+   nx_global = (HYPRE_BigInt) P * nx;
+   ny_global = (HYPRE_BigInt) Q * ny;
+   nz_global = (HYPRE_BigInt) R * nz;
    global_size = nx_global * ny_global * nz_global;
    if (myid == 0)
 
@@ -1024,9 +1024,9 @@ BuildIJLaplacian27pt( HYPRE_Int             argc,
    diag_i = hypre_CTAlloc(HYPRE_Int, local_size, HYPRE_MEMORY_HOST);
    offd_i = hypre_CTAlloc(HYPRE_Int, local_size, HYPRE_MEMORY_HOST);
 
-   Cx = (HYPRE_BigInt)(nx * (ny * nz - 1));
-   Cy = (HYPRE_BigInt)(nxy * (P * nz - 1));
-   Cz = (HYPRE_BigInt)(local_size * (P * Q - 1));
+   Cx = (HYPRE_BigInt) nx * ((HYPRE_BigInt) ny * nz - 1);
+   Cy = (HYPRE_BigInt) nxy * ((HYPRE_BigInt) P * nz - 1);
+   Cz = (HYPRE_BigInt) local_size * ((HYPRE_BigInt) P * Q - 1);
 #ifdef HYPRE_USING_OPENMP
    #pragma omp parallel
 #endif
@@ -2752,9 +2752,9 @@ BuildIJLaplacian7pt( HYPRE_Int            argc,
     * Print driver parameters
     *-----------------------------------------------------------*/
 
-   nx_global = (HYPRE_BigInt)(P * nx);
-   ny_global = (HYPRE_BigInt)(Q * ny);
-   nz_global = (HYPRE_BigInt)(R * nz);
+   nx_global = (HYPRE_BigInt) P * nx;
+   ny_global = (HYPRE_BigInt) Q * ny;
+   nz_global = (HYPRE_BigInt) R * nz;
    global_size = nx_global * ny_global * nz_global;
    if (myid == 0)
    {
@@ -2807,9 +2807,9 @@ BuildIJLaplacian7pt( HYPRE_Int            argc,
    diag_i = hypre_CTAlloc(HYPRE_Int, local_size, HYPRE_MEMORY_HOST);
    offd_i = hypre_CTAlloc(HYPRE_Int, local_size, HYPRE_MEMORY_HOST);
 
-   Cx = (HYPRE_BigInt)(nx * (ny * nz - 1));
-   Cy = (HYPRE_BigInt)(nxy * (P * nz - 1));
-   Cz = (HYPRE_BigInt)(local_size * (P * Q - 1));
+   Cx = (HYPRE_BigInt) nx * ((HYPRE_BigInt) ny * nz - 1);
+   Cy = (HYPRE_BigInt) nxy * ((HYPRE_BigInt) P * nz - 1);
+   Cz = (HYPRE_BigInt) local_size * ((HYPRE_BigInt) P * Q - 1);
 
 #ifdef HYPRE_USING_OPENMP
    #pragma omp parallel
