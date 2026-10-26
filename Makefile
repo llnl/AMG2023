@@ -6,12 +6,12 @@
 # Compiler and external dependences
 ########################################################################
 #CC        = mpixlc
-CC        = mpicc
+CC        = cc
 #CC        = mpiicc
 #CC        = cc
 
 #CXX       = mpixlC
-CXX       = mpic++
+CXX       = CC
 #CXX       = mpiicc
 #CXX       = CC
 
@@ -29,7 +29,7 @@ INCLUDES = ${HYPRE_CUDA_INCLUDE} ${HYPRE_HIP_INCLUDE} ${MPIINCLUDE} ${HYPRE_UMPI
 ##################################################################
 ## Set path to hypre installation
 ##################################################################
-HYPRE_DIR = /usr/WS1/li50/hypre/releases/src/hypre
+HYPRE_DIR = /usr/workspace/li50/hypre/releases/src/hypre
 
 ##################################################################
 ##  MPI options - this is needed for Crusher, Tioga, RZVernal,
@@ -44,23 +44,23 @@ HYPRE_DIR = /usr/WS1/li50/hypre/releases/src/hypre
 ########################################################################
 # CUDA options - set correct paths depending on cuda package
 ########################################################################
-HYPRE_CUDA_PATH    = /usr/tce/packages/cuda/cuda-10.1.243
-HYPRE_CUDA_INCLUDE = -I${HYPRE_CUDA_PATH}/include
-HYPRE_CUDA_LIBS    = -L${HYPRE_CUDA_PATH}/lib64 -lcudart -lcusparse -lcublas -lcurand
+HYPRE_CUDA_PATH    = # /usr/tce/packages/cuda/cuda-10.1.243
+HYPRE_CUDA_INCLUDE = # -I${HYPRE_CUDA_PATH}/include
+HYPRE_CUDA_LIBS    = # -L${HYPRE_CUDA_PATH}/lib64 -lcudart -lcusparse -lcublas -lcurand
 
 ########################################################################
 # HIP options set correct path depending on rocm version
 ########################################################################
-HYPRE_HIP_PATH    = #/opt/rocm-5.4.1
-HYPRE_HIP_INCLUDE = #-I${HYPRE_HIP_PATH}/include
-HYPRE_HIP_LIBS    = #-L${HYPRE_HIP_PATH}/lib -lamdhip64 -lrocsparse -lrocrand
+HYPRE_HIP_PATH    = /opt/rocm-6.4.3
+HYPRE_HIP_INCLUDE = -I${HYPRE_HIP_PATH}/include
+HYPRE_HIP_LIBS    = -L${HYPRE_HIP_PATH}/lib -lamdhip64 -lrocsparse -lrocrand -lrocblas -lrocsolver
 
 ##################################################################
 ##  UMPIRE options
 ##################################################################
-HYPRE_UMPIRE_LIB_DIR      = -L/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/lib
-HYPRE_UMPIRE_INCLUDE      = -I/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/include
-HYPRE_UMPIRE_LIB          = -lumpire
+HYPRE_UMPIRE_LIB_DIR      = -L$(HYPRE_DIR)/lib64 -L$(HYPRE_DIR)/lib
+HYPRE_UMPIRE_INCLUDE      =
+HYPRE_UMPIRE_LIB          = -lumpire -lcamp
 
 ########################################################################
 # Compiling and linking options
@@ -91,11 +91,11 @@ CXXINCLUDES = $(CINCLUDES) -I..
 CXXDEFS = $(CDEFS)
 CXXFLAGS  = $(COPTS) $(CINCLUDES) $(CDEFS)
 
-LIBS = -L$(HYPRE_DIR)/lib -lHYPRE $(XLINK) ${MPILIBS} -lm $(HYPRE_CUDA_LIBS) $(HYPRE_HIP_LIBS) ${HYPRE_UMPIRE_LIB_DIR} ${HYPRE_UMPIRE_LIB}
-#LIBS = -L$(HYPRE_DIR)/lib -lHYPRE $(XLINK) ${MPILIBS} $(HYPRE_HIP_LIBS)
+LIBS = -L$(HYPRE_DIR)/lib64 -lHYPRE $(XLINK) ${MPILIBS} -lm $(HYPRE_CUDA_LIBS) $(HYPRE_HIP_LIBS) ${HYPRE_UMPIRE_LIB_DIR} ${HYPRE_UMPIRE_LIB}
+#LIBS = -L$(HYPRE_DIR)/lib64 -lHYPRE $(XLINK) ${MPILIBS} $(HYPRE_HIP_LIBS)
 #LFLAGS = $(LINKOPTS) $(LIBS) -lstdc++
 
-XLINK = -Wl,-rpath,${HYPRE_DIR}/lib
+XLINK = -Wl,-rpath,${HYPRE_DIR}/lib64
 
 LFLAGS = $(LINKOPTS) $(LIBS) $(XLINK)
 

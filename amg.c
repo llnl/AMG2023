@@ -425,8 +425,13 @@ main( hypre_int argc,
 #endif
    hypre_TFree(tmp_ptr, memory_location);
    /* make sure hypre doesn't own the pools */
+#if HYPRE_RELEASE_NUMBER < 30200
    assert(hypre_HandleOwnUmpireUMPool(hypre_handle()) == 0);
    assert(hypre_HandleOwnUmpireDevicePool(hypre_handle()) == 0);
+#else
+   assert(hypre_HandleUmpireOwnUMPool(hypre_handle()) == 0);
+   assert(hypre_HandleUmpireOwnDevicePool(hypre_handle()) == 0);
+#endif
 #endif
 
    /* default memory location */
